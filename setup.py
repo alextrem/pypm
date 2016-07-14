@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
         name='pypm',
         version='0.0.1',
-        description='Powermanagement Logger and lala',
+        description='Powermanagement command creator',
         url='github',
         author='Alexander Geissler',
         author_email='alexander.geissler@izt-labs.de',
