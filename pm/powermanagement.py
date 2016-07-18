@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+import csv
 
 
 class PowerManagement():
@@ -36,6 +39,19 @@ class PowerManagement():
                     "PMBUS_MODIFY_BYTE": 0x20,
                     "PMBUS_MODIFY_WORD": 0x21
             }
-    def __init__():
+
+    def __init__(self):
+        """
+        """
+        self.recordfile = None
+        self.devices = None
+
+    def record(self):
+        """
+        Starts recording the current voltages attached to the PM/SMBus.
+        The results are stored in a csv file.
+        """
+
+    def read_voltage(self):
         """
         """
