@@ -15,7 +15,7 @@ class Commands(Pmbus):
 
     All commands contain a key, value pair
     """
-    pmbus_commands = {"PAGE": (0x00, False),
+    pmbus_commands = {"PAGE": (0x00, False, "WB),
                       "OPERATION": (0x01, True),
                       "ON_OFF_CONFIG": (0x02, True),
                       "CLEAR_FAULTS": (0x03, True),
