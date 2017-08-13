@@ -6,7 +6,7 @@ setup(
         description='Powermanagement command creator',
         url='github',
         author='Alexander Geissler',
-        author_email='alexander.geissler@izt-labs.de',
+        author_email='alextrem@web.de',
         license='MIT',
         classifiers=[
             'Development Status :: 3 - Alpha',
