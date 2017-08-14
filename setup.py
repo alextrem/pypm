@@ -1,3 +1,6 @@
+"""
+setup file for this package
+"""
 from setuptools import setup, find_packages
 
 setup(
