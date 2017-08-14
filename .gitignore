@@ -1,0 +1,7 @@
+*.swp
+*.pyc
+
+# directories
+.tox
+*.egg-info
+
