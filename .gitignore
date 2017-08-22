@@ -2,6 +2,7 @@
 *.pyc
 
 # directories
+build
 .tox
 *.egg-info
 
