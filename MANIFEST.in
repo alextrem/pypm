@@ -1,3 +1,5 @@
 pm/parser.py
 pm/pmbus.py
 pm/powermanagement.py
+include versioneer.py
+include pm/_version.py
