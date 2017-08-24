@@ -1,13 +1,14 @@
 """
 setup file for this package
 """
+import versioneer
 from setuptools import setup, find_packages
 
 setup(
         name='pypm',
-        version='0.0.1',
+        version=versioneer.get_version(),
         description='Powermanagement command creator',
-        url='github',
+        url='http://www.github.com/alextrem',
         author='Alexander Geissler',
         author_email='alextrem@web.de',
         license='MIT',
@@ -25,8 +26,8 @@ setup(
                           'scipy',
                           'matplotlib'],
         extras_require={
-            'dev' : ['check-manifest'],
-            'test' : ['coverage'],
+            'dev': ['check-manifest'],
+            'test': ['coverage'],
             },
         entry_points={
             'console_scripts': [
