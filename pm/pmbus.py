@@ -1,11 +1,18 @@
 #! /usr/bin/env python
 
-class Pmbus():
+""" Module creates PMBus commands to be sent """
+
+import struct
+
+class Pmbus(object):
     """
+    This class creates commands for PMBus
     """
     def __init__(self):
         """
+        Constructor
         """
+
     def write_byte(self, slave_addr, command, data):
         """
         Send a data byte over PMBus
@@ -103,6 +110,11 @@ class Pmbus():
         -------
 
         """
+        commands = struct.pack('2B', slave_addr, command)
+        print commands
+        print (slave_addr, command)
+        return command
+
     def read_word_pec(self, slave_addr, command):
         """
         Read two bytes over PMBus with parity error check

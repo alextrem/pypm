@@ -14,6 +14,19 @@ class Parser(object):
 
     It convertes the encoded instruction in the hexfile into CSV.
     As a result we can use the CSV to program the device
+
+    Attributes
+    ----------
+    record_length : hex
+        Defines the length of the record in half word
+    record_type : byte
+        Linear Technologies defined record types
+    address : byte
+        Address to write to PM device
+    command : byte
+        TBD
+    data : byte
+        TBD
     """
     lt_record_type = {"PMBUS_WRITE_BYTE": 0x01,
                       "PMBUS_WRITE_WORD": 0x02,
@@ -65,7 +78,7 @@ class Parser(object):
         """
         Constructor
         """
-        self.hexfile = IntelHex(hexfile)
+        self.hf = IntelHex(hexfile)
         self.record_length = None
         self.record_type = None
         self.address = None
@@ -80,20 +93,19 @@ class Parser(object):
         i = position
 
         # Get the number of bytes for the defined record
-        self.record_length = struct.unpack('<H',
-                                           struct.pack('2B',
-                                                       self.hexfile[i],
-                                                       self.hexfile[i+1]))[0]
+        self.record_length = struct.unpack('<H', struct.pack('2B',
+                                                             self.hf[i],
+                                                             self.hf[i+1]))[0]
 
         # Record
         self.record_type = struct.unpack('<H', struct.pack('2B',
-                                                           self.hexfile[i+2],
-                                                           self.hexfile[i+3]))[0]
+                                                           self.hf[i+2],
+                                                           self.hf[i+3]))[0]
 
         # When there is an event inform us
         if self.record_type == self.lt_record_type["EVENT"]:
             print "Event triggered"
-            #self._get_payload(i)
+            self._get_lt_payload(i)
             #for n in self.lt_record_event is self.data
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_BYTE"]:
             self._get_lt_payloadheader(i)
@@ -130,33 +142,41 @@ class Parser(object):
         # Assume LT record and payload header need to byte each
         i = position + 4
 
-        self.address = struct.unpack('<H', struct.pack('2B', self.hexfile[i],
-                                                             self.hexfile[i+1]))[0]
+        self.address = struct.unpack('<H', struct.pack('2B', self.hf[i],
+                                                             self.hf[i+1]))[0]
         # Find how much we need to parse
-        self.command = struct.unpack('B', struct.pack('B', self.hexfile[i+2]))[0]
+        self.command = struct.unpack('B', struct.pack('B', self.hf[i+2]))[0]
 
     def _get_lt_payload(self, position):
         """
         Extract payload
+
+        Parameters
+        ----------
+        position : int
+            position in hexfile
         """
         i = position + 7
 
         if self.record_type == self.lt_record_type["EVENT"]:
             i = position +4
-            self.data
+            print "Position %d" % i
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
+                                                              self.hf[i+2]))[0]
+            print "Data %d" % self.data
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_BYTE"]:
-            self.data = struct.unpack('B', struct.pack('B', self.hexfile[i+1]))[0]
+            self.data = struct.unpack('B', struct.pack('B', self.hf[i+1]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_BYTE_NOPEC"]:
-            self.data = struct.unpack('B', struct.pack('B', self.hexfile[i]))[0]
+            self.data = struct.unpack('B', struct.pack('B', self.hf[i]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_WORD"]:
-            self.data = struct.unpack('<H', struct.pack('2B', self.hexfile[i+1],
-                                                              self.hexfile[i+2]))[0]
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
+                                                              self.hf[i+2]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_WORD_NOPEC"]:
-            self.data = struct.unpack('<H', struct.pack('2B', self.hexfile[i],
-                                                              self.hexfile[i+1]))[0]
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i],
+                                                              self.hf[i+1]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_READ_BYTE_LOOP_MASK"]:
-            self.data = struct.unpack('<H', struct.pack('2B', self.hexfile[i+1],
-                                                              self.hexfile[i+2]))[0]
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
+                                                              self.hf[i+2]))[0]
 
     def parse(self, hexfile="ltctest.isphex"):
         """
@@ -168,7 +188,7 @@ class Parser(object):
             hexfile which should be parsed
         """
         i = 0
-        while i < 3966:
+        while i < self.hf.__len__():
             i += self._get_lt_record_type(i)
             print i
 

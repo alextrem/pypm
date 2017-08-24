@@ -1,11 +1,17 @@
 #! /usr/bin/env python
 
+"""
+This module contains commands to programm Linear Technology power management
+devices.
+"""
+
 from pmbus import Pmbus
 
 class Commands(Pmbus):
     """
-    This class collects all commands needed to communicate with Powermanagement devices.
-    The class acts as a command generator to write an read data over I2C Bus.
+    This class collects all commands needed to communicate with Powermanagement
+    devices. The class acts as a command generator to write an read data over
+    I2C Bus.
 
     Typical usage:
 
@@ -15,7 +21,7 @@ class Commands(Pmbus):
 
     All commands contain a key, value pair
     """
-    pmbus_commands = {"PAGE": (0x00, False, "WB),
+    pmbus_commands = {"PAGE": (0x00, False, "WB"),
                       "OPERATION": (0x01, True),
                       "ON_OFF_CONFIG": (0x02, True),
                       "CLEAR_FAULTS": (0x03, True),
@@ -95,3 +101,4 @@ class Commands(Pmbus):
     def __init__(self):
         """
         """
+        Pmbus.__init__()
