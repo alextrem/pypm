@@ -1,12 +1,18 @@
+"""
+setup file for this package
+"""
+import versioneer
 from setuptools import setup, find_packages
+
+cmdclass = versioneer.get_cmdclass()
 
 setup(
         name='pypm',
-        version='0.0.1',
-        description='Powermanagement Logger and lala',
-        url='github',
+        version=versioneer.get_version(),
+        description='Powermanagement command creator',
+        url='http://www.github.com/alextrem/pypm',
         author='Alexander Geissler',
-        author_email='alexander.geissler@izt-labs.de',
+        author_email='alextrem@web.de',
         license='MIT',
         classifiers=[
             'Development Status :: 3 - Alpha',
@@ -17,13 +23,14 @@ setup(
             'Programming Language :: Python :: 3.3',
             ],
         keywords='development powermanagement',
+        cmdclass=cmdclass,
         packages=find_packages(exclude=['docs', 'test']),
         install_requires=['numpy',
                           'scipy',
                           'matplotlib'],
         extras_require={
-            'dev' : ['check-manifest'],
-            'test' : ['coverage'],
+            'dev': ['check-manifest'],
+            'test': ['coverage'],
             },
         entry_points={
             'console_scripts': [
