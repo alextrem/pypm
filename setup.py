@@ -4,11 +4,13 @@ setup file for this package
 import versioneer
 from setuptools import setup, find_packages
 
+cmdclass = versioneer.get_cmdclass()
+
 setup(
         name='pypm',
         version=versioneer.get_version(),
         description='Powermanagement command creator',
-        url='http://www.github.com/alextrem',
+        url='http://www.github.com/alextrem/pypm',
         author='Alexander Geissler',
         author_email='alextrem@web.de',
         license='MIT',
@@ -21,6 +23,7 @@ setup(
             'Programming Language :: Python :: 3.3',
             ],
         keywords='development powermanagement',
+        cmdclass=cmdclass,
         packages=find_packages(exclude=['docs', 'test']),
         install_requires=['numpy',
                           'scipy',
