@@ -8,7 +8,7 @@ import struct
 from intelhex import IntelHex
 
 
-class Parser(object):
+class PmParser(object):
     """
     Parser class currently for LT devices ISP hexfile
 
@@ -195,5 +195,5 @@ class Parser(object):
         print self.payload
 
 
-p = Parser("pm/ltctest.isphex")
+p = PmParser("pm/ltctest.isphex")
 p.parse()
