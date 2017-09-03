@@ -7,6 +7,7 @@ devices.
 
 from pmbus import Pmbus
 
+
 class Commands(Pmbus):
     """
     This class collects all commands needed to communicate with Powermanagement
@@ -88,17 +89,17 @@ class Commands(Pmbus):
                       "MFR_TELEMETRY": (0xCF, False),
                       "MFR_CONFIG_LTC2977": (0xD0, False),
                       "MFR_CONFIG_ALL_LTC2977": (0xD1, False),
-
-            }
+                      }
 
     analog_devices = {}
     linear_technology_devices = {"LTC2977": (8),
                                  "LTM2987": (16)
-            }
+                                 }
 
     maxim_devices = {}
 
     def __init__(self):
         """
+        Constructor
         """
         Pmbus.__init__()
