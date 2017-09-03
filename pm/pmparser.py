@@ -60,8 +60,8 @@ class PmParser(object):
                       "PMBUS_WRITE_EE_DATA": 0x1E,
                       "PMBUS_READ_AND_VERIFY_EE_DATA": 0x1F,
                       "PMBUS_MODIFY_BYTE": 0x20,
-                      "PMBUS_MODIFY_WORD": 0x21
-            }
+                      "PMBUS_MODIFY_WORD": 0x21,
+                      }
 
     lt_record_event = {"BEFORE_BEGIN": 0x00,
                        "BEFORE_INSYSTEM_PROGRAMMING_BEGIN": 0x10,
@@ -72,7 +72,6 @@ class PmParser(object):
                        "INSYSTEM_CHIP_AFTER_VERIFY": 0x13,
                        "SYSTEM_AFTER_VERIFY": 0x04,
                        "AFTER_DONE": 0x03}
-
 
     def __init__(self, hexfile):
         """
@@ -132,14 +131,13 @@ class PmParser(object):
             self._get_lt_payload(i)
             self.payload.append([self.address, self.command, self.data])
 
-
         return self.record_length
 
     def _get_lt_payloadheader(self, position):
         """
         Extract payloadheader
         """
-        # Assume LT record and payload header need to byte each
+        # Assume LT record and payload header need two byte each
         i = position + 4
 
         self.address = struct.unpack('<H', struct.pack('2B', self.hf[i],
@@ -159,7 +157,7 @@ class PmParser(object):
         i = position + 7
 
         if self.record_type == self.lt_record_type["EVENT"]:
-            i = position +4
+            i = position + 4
             print "Position %d" % i
             self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
                                                               self.hf[i+2]))[0]
