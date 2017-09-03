@@ -4,6 +4,7 @@
 
 import struct
 
+
 class Pmbus(object):
     """
     This class creates commands for PMBus
