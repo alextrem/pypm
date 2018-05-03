@@ -5,6 +5,7 @@ Parse the file for programming Linears Power Management devices
 """
 
 import struct
+# import logging
 from intelhex import IntelHex
 
 
@@ -73,7 +74,7 @@ class PmParser(object):
                        "SYSTEM_AFTER_VERIFY": 0x04,
                        "AFTER_DONE": 0x03}
 
-    def __init__(self, hexfile):
+    def __init__(self, hexfile, logger=None):
         """
         Constructor
         """
@@ -84,6 +85,7 @@ class PmParser(object):
         self.command = None
         self.data = None
         self.payload = []
+        self.logger = logger
 
     def _get_lt_record_type(self, position):
         """
@@ -94,18 +96,18 @@ class PmParser(object):
         # Get the number of bytes for the defined record
         self.record_length = struct.unpack('<H', struct.pack('2B',
                                                              self.hf[i],
-                                                             self.hf[i+1]))[0]
+                                                             self.hf[i + 1]))[0]
 
         # Record
         self.record_type = struct.unpack('<H', struct.pack('2B',
-                                                           self.hf[i+2],
-                                                           self.hf[i+3]))[0]
+                                                           self.hf[i + 2],
+                                                           self.hf[i + 3]))[0]
 
         # When there is an event inform us
         if self.record_type == self.lt_record_type["EVENT"]:
             print "Event triggered"
             self._get_lt_payload(i)
-            #for n in self.lt_record_event is self.data
+            # for n in self.lt_record_event is self.data
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_BYTE"]:
             self._get_lt_payloadheader(i)
             self._get_lt_payload(i)
@@ -141,9 +143,9 @@ class PmParser(object):
         i = position + 4
 
         self.address = struct.unpack('<H', struct.pack('2B', self.hf[i],
-                                                             self.hf[i+1]))[0]
+                                                       self.hf[i + 1]))[0]
         # Find how much we need to parse
-        self.command = struct.unpack('B', struct.pack('B', self.hf[i+2]))[0]
+        self.command = struct.unpack('B', struct.pack('B', self.hf[i + 2]))[0]
 
     def _get_lt_payload(self, position):
         """
@@ -159,22 +161,22 @@ class PmParser(object):
         if self.record_type == self.lt_record_type["EVENT"]:
             i = position + 4
             print "Position %d" % i
-            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
-                                                              self.hf[i+2]))[0]
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i + 1],
+                                                        self.hf[i + 2]))[0]
             print "Data %d" % self.data
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_BYTE"]:
-            self.data = struct.unpack('B', struct.pack('B', self.hf[i+1]))[0]
+            self.data = struct.unpack('B', struct.pack('B', self.hf[i + 1]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_BYTE_NOPEC"]:
             self.data = struct.unpack('B', struct.pack('B', self.hf[i]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_WORD"]:
-            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
-                                                              self.hf[i+2]))[0]
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i + 1],
+                                                        self.hf[i + 2]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_WRITE_WORD_NOPEC"]:
             self.data = struct.unpack('<H', struct.pack('2B', self.hf[i],
-                                                              self.hf[i+1]))[0]
+                                                        self.hf[i + 1]))[0]
         elif self.record_type == self.lt_record_type["PMBUS_READ_BYTE_LOOP_MASK"]:
-            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i+1],
-                                                              self.hf[i+2]))[0]
+            self.data = struct.unpack('<H', struct.pack('2B', self.hf[i + 1],
+                                                        self.hf[i + 2]))[0]
 
     def parse(self, hexfile="ltctest.isphex"):
         """
