@@ -4,7 +4,7 @@
 Parser class module for Linear Technologies Power Management devices
 '''
 
-import csv
+# import csv
 
 
 class PowerManagement(object):
