@@ -2,6 +2,8 @@
 *.pyc
 
 # directories
+.eggs
+.pytest_cache
 build
 .tox
 *.egg-info
