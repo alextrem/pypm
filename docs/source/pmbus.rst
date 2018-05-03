@@ -1,7 +1,7 @@
 pmbus module
 ============
 
-.. automodule:: pmbus
+.. automodule:: pm.pmbus
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,7 +1,7 @@
 powermanagement module
 ======================
 
-.. automodule:: powermanagement
+.. automodule:: pm.powermanagement
     :members:
     :undoc-members:
     :show-inheritance:
